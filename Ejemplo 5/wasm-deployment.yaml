@@ -1,0 +1,40 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wasm-deployment
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: wasm
+  template:
+    metadata:
+      labels:
+        app: wasm
+    spec:
+      containers:
+      - name: wasm
+        image: <TU_IMAGEN_DE_DOCKER>
+        ports:
+        - containerPort: 3001
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: wasm-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: wasm
+  ports:
+  - port: 3001
+    targetPort: 3001
+    protocol: TCP

@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/target-type: ip
+    nginx.org/listen-ports: '[3000,3001]'
+    nginx.org/listen-ports-ssl: '[443]'
+    ingress.kubernetes.io/ssl-redirect: "true"
+    # linkerd.io/inject: ingress
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  -  http:
+       paths:
+       - path: /grpc/
+         pathType: Prefix
+         backend:
+           service:
+             name: grpc-service
+             port:
+               number: 3000
+       - path: /wasm/
+         pathType: Prefix
+         backend:
+           service:
+             name: wasm-service
+             port:
+               number: 3001
