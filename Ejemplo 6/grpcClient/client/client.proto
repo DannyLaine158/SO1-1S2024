@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option go_package = "./;confproto";
+
+package confproto;
+
+service getInfo {
+  rpc returnInfo (requestId) returns (replyInfo) {}
+}
+
+message requestId {
+  string album = 1;
+  string year = 2;
+  string artist = 3;
+  string ranked = 4;
+}
+
+message replyInfo {
+  string info = 1;
+}
